@@ -1,12 +1,11 @@
-import React from 'react'
 import ButtonCategory from './ButtonCategory'
-import VideoContainer from './VideoContainer'
+import { Outlet } from 'react-router-dom'
 
 function Main() {
   return (
-    <div>
+    <div className='h-[91vh] overflow-y-scroll no-scrollbar'>
         <ButtonCategory/>
-        <VideoContainer/>
+        <Outlet/>
     </div>
   )
 }

@@ -15,11 +15,14 @@ export const sidebarSlice = createSlice({
     reducers : {
         sidebarToggle : (state) => {
             state.isSidebarOpen = !state.isSidebarOpen
+        },
+        sidebarClose : (state) => {
+            state.isSidebarOpen = false
         } 
 
     }
 })
 
-export const { sidebarToggle } = sidebarSlice.actions;
+export const { sidebarToggle, sidebarClose  } = sidebarSlice.actions;
 
 export default sidebarSlice.reducer;

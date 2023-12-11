@@ -2,19 +2,23 @@ import { Clapperboard, Clock4, History, Home, Rss, ThumbsUp, Tv } from 'lucide-r
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
+import { Link } from 'react-router-dom'
 
 const sidebarTop = [
   {
     icon : <Home />,
-    title : 'Home'
+    title : 'Home',
+    path : '/'
   },
   {
     icon : <Clapperboard />,
-    title : 'Shorts'
+    title : 'Shorts',
+    path : '/'
   },
   {
     icon : <Rss />,
-    title : 'Subscrption'
+    title : 'Subscrption',
+    path : '/'
   },
 ]
 
@@ -134,10 +138,12 @@ function Sidebar() {
     <div className='w-[15%] border-r-[1.5px] p-6 h-[91vh] overflow-y-scroll'>
       {/* SIDEBAR TOP */}
       <ul className='flex flex-col gap-4'>
-        {sidebarTop.map(({icon, title}, index) => (
+        {sidebarTop.map(({icon, title, path}, index) => (
+        <Link to={path}>
           <li key={index} className='flex justify-start gap-2 align-middle cursor-pointer'>
-            {icon} <span>{title}</span>
+              {icon} <span>{title}</span>
           </li>
+        </Link>
         ))}
       </ul>
 
