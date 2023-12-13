@@ -1,8 +1,9 @@
 import { Clapperboard, Clock4, History, Home, Rss, ThumbsUp, Tv } from 'lucide-react'
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store/store'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { sidebarOpen } from '../features/sidebar/sidebar'
 
 const sidebarTop = [
   {
@@ -131,7 +132,8 @@ const sidebarMiddle = [
 ]
 
 function Sidebar() {
-  const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isSidebarOpen)
+  const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isSidebarOpen);
+
   if(!isSidebarOpen) return null;
 
   return (
@@ -149,8 +151,8 @@ function Sidebar() {
 
       {/* SIDEBAR TOP */}
       <section>
-        {sidebarMiddle.map(({heading, info }) => (
-          <div className='my-6 border-t-[1.5px]'>
+        {sidebarMiddle.map(({heading, info }, index) => (
+          <div className='my-6 border-t-[1.5px]' key={index}>
             <h3 className='text-lg my-2 font-semibold'>{heading}</h3>
             <ul className='flex flex-col gap-4'>
               {info.map(({icon, title}, index) => (                
