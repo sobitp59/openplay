@@ -6,12 +6,12 @@ import { useEffect, useRef, useState } from 'react'
 import { YOUTUBE_SUGGESTION_API } from '../constants'
 import { RootState } from '../store/store'
 import { cacheSearchResults } from '../features/search/search'
+import { useNavigate } from 'react-router-dom'
 
 type SearchData = {
     [key: string]: string[];
   }
   
-
 function Header() {
     const [searchQuery, setSearchQuery] = useState("")
     const [suggestions, setSuggestions] = useState<string[]>([])
@@ -19,7 +19,7 @@ function Header() {
     const dispatch = useDispatch()
     const cachedData = useSelector((store: RootState) => store.search) as SearchData;
 
-
+    const navigate = useNavigate()
     const suggestionsRef = useRef(null)
 
     useEffect(() => {
@@ -50,6 +50,7 @@ function Header() {
         }
     }
 
+
     useEffect(() => {
         const handleClickOutside = (event : MouseEvent) => {
             if(suggestionsRef.current && !((suggestionsRef.current as HTMLElement).contains(event.target as Node))){
@@ -63,6 +64,12 @@ function Header() {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [])
+
+    function handleSuggestionClick(suggestion : string){
+        setSearchQuery(suggestion)
+        navigate('/results')
+        setShowsuggestions(false)
+    }
   
   return (
     <div className='flex justify-between align-middle py-6 px-4 border-b-2'>
@@ -87,12 +94,7 @@ function Header() {
             </section>
             {showSuggestions && suggestions.length > 0 && <ul ref={suggestionsRef} className='absolute z-[5] bg-white w-[430px] rounded-md p-2 top-[60px] shadow-sm border-[1.5px]'>
                 {suggestions.map((suggestion) => (
-                    <li onClick={() =>{
-                        setSearchQuery(suggestion)
-                        setShowsuggestions(false)
-                    }
-
-                    }  key={suggestion} className='p-2 flex justify-start align-center rounded-md hover:bg-gray-100 cursor-pointer font-manrope text-gray-500'>
+                    <li onClick={() => handleSuggestionClick(suggestion)}  key={suggestion} className='p-2 flex justify-start align-center rounded-md hover:bg-gray-100 cursor-pointer font-manrope text-gray-500'>
                         <Search className='w-5 h-5 mr-3'/> {suggestion}
                     </li>
                 ))}
