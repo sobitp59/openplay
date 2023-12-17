@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { sidebarClose } from '../features/sidebar/sidebar'
 import { useSearchParams } from 'react-router-dom'
 import { YOUTUBE_VIDEO_BYID } from '../constants'
-import { DataType } from '../types'
-import { CircleUserRound } from 'lucide-react'
 import Comment from './Comment'
+import LiveChat from './LiveChat'
+import { RootState } from '../store/store'
 
 export const WatchVideo = () => {
     const dispatch = useDispatch()
     const [searchParams] = useSearchParams()
     const [video, setVideo] = useState(null)
+    const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isSidebarOpen)
 
     useEffect(() => {
         dispatch(sidebarClose()) 
@@ -246,26 +247,31 @@ export const WatchVideo = () => {
       },
     ]
     
+    const videoWidth = !isSidebarOpen ? '1200px' : '1100px'
+    const videoHeight = !isSidebarOpen ? '700px' : '600px'
 
   return (
     <div className='p-6 w-full'>
- 
+      
         {/* Video Frame */}
-        <section>
-          <iframe 
-              className='rounded-lg'
-              width={'1200px'} 
-              height={'600px'} 
-              src={"https://www.youtube.com/embed/" + searchParams.get("v")} 
-              title="YouTube video player" 
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              allowFullScreen>
-          </iframe>
-        </section>
+        <div className='w-full  flex gap-2'>
+          <section className='w-full'>
+            <iframe 
+                className='rounded-lg'
+                width={videoWidth} 
+                height={videoHeight} 
+                src={"https://www.youtube.com/embed/" + searchParams.get("v")} 
+                title="YouTube video player" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowFullScreen>
+            </iframe>
+          </section>
+            <LiveChat videoHeight={videoHeight}/>
+        </div>
 
         {/* Comments Section */}
-        <section className='w-[1200px]'>
+        <section className={`w-[${videoWidth}] mt-[20px]`}>
           <ul>
             {comments.map(({id, name, text, replies}) => (
               <>

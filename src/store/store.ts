@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import sidebarSlice  from "../features/sidebar/sidebar";
 import searchSlice  from "../features/search/search";
+import livechatSlice  from "../features/livechat/livechat";
 
 export const store = configureStore({
     reducer : {
         sidebar : sidebarSlice,
-        search : searchSlice
+        search : searchSlice,
+        livechat : livechatSlice
     }
 })
 

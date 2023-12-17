@@ -5,7 +5,7 @@ import Main from './Main'
 
 function Body() {
   return (
-    <div className='flex  font-manrope'>
+    <div className='flex w-full font-manrope'>
         <Sidebar/>
         <Main/>
     </div>
