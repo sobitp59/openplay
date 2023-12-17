@@ -3,9 +3,9 @@ import Logo from './Logo'
 import { useDispatch, useSelector } from 'react-redux'
 import { sidebarToggle } from '../features/sidebar/sidebar'
 import { useEffect, useRef, useState } from 'react'
-import { YOUTUBE_SUGGESTION_API } from '../constants'
+import { YOUTUBE_SEARCH_VIDEO, YOUTUBE_SUGGESTION_API } from '../constants'
 import { RootState } from '../store/store'
-import { cacheSearchResults } from '../features/search/search'
+import { cacheSearchResults, getSearchedVideos, setSearchQuery } from '../features/search/search'
 import { useNavigate } from 'react-router-dom'
 
 type SearchData = {
@@ -13,11 +13,11 @@ type SearchData = {
   }
   
 function Header() {
-    const [searchQuery, setSearchQuery] = useState("")
     const [suggestions, setSuggestions] = useState<string[]>([])
     const [showSuggestions, setShowsuggestions] = useState<boolean>(true);
     const dispatch = useDispatch()
-    const cachedData = useSelector((store: RootState) => store.search) as SearchData;
+    const cachedData = useSelector((store: RootState) => store.search.cachedSearch) as SearchData;
+    const searchQuery = useSelector((store: RootState) => store.search.searchQuery) ;
 
     const navigate = useNavigate()
     const suggestionsRef = useRef(null)
@@ -65,8 +65,28 @@ function Header() {
         }
     }, [])
 
+    
+
+    async function handleVideoSearch(){
+        try {
+            const response = await fetch(`${YOUTUBE_SEARCH_VIDEO}q=${searchQuery}&key=AIzaSyChltceAnm4NiSLnObp1Fs5ZkyygGHVOGE`);
+            const data = await response.json()
+            dispatch(getSearchedVideos(data?.items))
+            navigate('/results')  
+        } catch (error) {
+            console.log('SERACH VIDEO',error)
+        }
+    }
+
+    async function handleVideoSearchOnKeyDown(e:React.KeyboardEvent<HTMLInputElement>){
+        if(e.key === 'Enter'){
+            handleVideoSearch()
+        }
+    }
+
     function handleSuggestionClick(suggestion : string){
-        setSearchQuery(suggestion)
+        dispatch(setSearchQuery(suggestion))
+        handleVideoSearch()
         navigate('/results')
         setShowsuggestions(false)
     }
@@ -84,11 +104,12 @@ function Header() {
                     type="search" 
                     placeholder='Search' 
                     className='w-full h-full outline-none font-manrope'
-                    onChange={(e) => setSearchQuery(e?.target?.value)}
+                    onChange={(e) => dispatch(setSearchQuery(e?.target?.value))}
                     value={searchQuery}
                     onFocus={() => setShowsuggestions(true)}
+                    onKeyDown={handleVideoSearchOnKeyDown}
                 />
-                <button className='px-6 border-l-[1.5px] rounded-r-full bg-gray-200'>
+                <button onClick={handleVideoSearch} className='px-6 border-l-[1.5px] rounded-r-full bg-gray-200'>
                     <SearchIcon className='h-auto w-full' />
                 </button>
             </section>
