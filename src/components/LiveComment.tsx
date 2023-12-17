@@ -8,7 +8,7 @@ const LiveComment = () => {
     const dispatch = useDispatch();
 
     function handleAddMessage(){
-        dispatch(addMessage({name : 'Sobit', message : message}))
+        dispatch(addMessage({name : 'Sobit(You)', message : message}))
         setMessage('')
     }
 

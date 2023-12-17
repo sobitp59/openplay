@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import VideoContainer from "./components/VideoContainer";
 import { WatchVideo } from "./components/WatchVideo";
 import Results from "./components/Results";
+import ErrorBoundary from "./components/Error";
 
 
 
@@ -15,25 +16,13 @@ function App() {
 
   return (
     <div className="w-full h-full">
-    {/* 
-      Header
-      Body
-        MainContainer
-          - Sidebar
-            - MenuItems
-          - ButtonsCategory
-          - VideosContainer
-            - VideoCard 
-    
-    */}
     <Provider store={store}>
       <Header />
-
         <Routes>
           <Route path="/" element={<Body/>} >
-            <Route path="/" element={<VideoContainer/>}/>
-            <Route path="watch" element={<WatchVideo/>}/>
-            <Route path="/results" element={<Results/>}/>
+            <Route path="/" element={<ErrorBoundary><VideoContainer/></ErrorBoundary>}/>
+            <Route path="watch" element={<ErrorBoundary><WatchVideo/></ErrorBoundary>}/>
+            <Route path="/results" element={<ErrorBoundary><Results/></ErrorBoundary> }/>
           </Route>
         </Routes>
       </Provider>
