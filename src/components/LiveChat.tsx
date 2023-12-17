@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store/store'
 import { addMessage } from '../features/livechat/livechat'
 import { generateRandomMessage, generateRandomName } from '../utils/helpers'
+import LiveComment from './LiveComment'
 
 const LiveChat = ({ videoHeight}: { videoHeight : string}) => {
     const messages = useSelector((state: RootState) => state.livechat.messages)
@@ -23,10 +24,13 @@ const LiveChat = ({ videoHeight}: { videoHeight : string}) => {
     }, [])
 
   return (
-    <div className={`flex flex-col-reverse gap-4 shadow-sm border-[1.5px] p-3 rounded-md w-full h-[${videoHeight}] overflow-y-scroll`}>
-        {messages.map(({name,message}, index) => (
-          <ChatMessage key={index} name={name} message={message}/>
-        ))}
+    <div className={`flex flex-col border-[1.5px]  rounded-md w-full h-[${videoHeight}]`}>
+      <div className={`flex p-3 flex-col-reverse gap-4 shadow-sm overflow-y-scroll h-full`}>
+          {messages.map(({name,message}, index) => (
+            <ChatMessage key={index} name={name} message={message}/>
+          ))}
+      </div>
+      <LiveComment/>
     </div>
   )
 }
