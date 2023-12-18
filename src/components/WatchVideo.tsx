@@ -251,10 +251,10 @@ export const WatchVideo = () => {
     const videoHeight = !isSidebarOpen ? '700px' : '600px'
 
   return (
-    <div className='p-6 w-full'>
+    <div className='p-6 w-full mt-[80px] '>
       
         {/* Video Frame */}
-        <div className='w-full  flex gap-2'>
+        <div className='w-full  flex gap-2 relative'>
           <section className='w-full'>
             <iframe 
                 className='rounded-lg'
@@ -267,11 +267,11 @@ export const WatchVideo = () => {
                 allowFullScreen>
             </iframe>
           </section>
-            <LiveChat videoHeight={videoHeight}/>
+            <LiveChat />
         </div>
 
         {/* Comments Section */}
-        <section className={`w-[${videoWidth}] mt-[20px]`}>
+        <section className={`w-[${videoWidth}]`}>
           <ul>
             {comments.map(({id, name, text, replies}) => (
               <>

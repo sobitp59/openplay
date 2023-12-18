@@ -2,12 +2,23 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Results = () => {
-  const videos = useSelector((store: RootState) => store.search.videos) ;
+  const videos = useSelector((store: RootState) => store.search.videos);
+  console.log(videos)
+
+  // useEffect(() => {
+  //   async function handleInfiniteSearh() {
+  //     console.log('HELLO')
+  //     console.log(document.documentElement.clientWidth);
+  //   }
+
+  //   window.addEventListener('scroll', handleInfiniteSearh);
+  // }, [])
 
   return (
-    <div className='p-6 w-full'>
+    <div className='p-6 w-full mt-[80px]'>
       <ul>
         {videos?.map(({snippet : {title, description, thumbnails,channelTitle},id }) => (
            <Link key={id['videoId']} to={`/watch?v=${id['videoId']}`}>

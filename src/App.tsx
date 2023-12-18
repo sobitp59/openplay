@@ -15,7 +15,7 @@ function App() {
 
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full relative">
     <Provider store={store}>
       <Header />
         <Routes>

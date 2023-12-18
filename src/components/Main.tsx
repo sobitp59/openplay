@@ -1,9 +1,12 @@
+import { useSelector } from 'react-redux'
 import ButtonCategory from './ButtonCategory'
 import { Outlet } from 'react-router-dom'
+import { RootState } from '../store/store'
 
-function Main() { 
+function Main() {
+  const isSidebarOpen = useSelector((state : RootState) => state.sidebar.isSidebarOpen) 
   return (
-    <div className='h-[91vh] w-full overflow-y-scroll no-scrollbar'>
+    <div className={`w-full mt-[88px] relative ${isSidebarOpen ? 'ml-[15%]' : 'ml-0' } `}>
         <ButtonCategory/>
         <Outlet/>
     </div>

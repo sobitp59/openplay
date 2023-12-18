@@ -92,7 +92,7 @@ function Header() {
     }
   
   return (
-    <div className='flex justify-between align-middle py-6 px-4 border-b-2'>
+    <div className='flex justify-between fixed w-full bg-white align-middle py-6 px-4 z-50'>
         <section className='flex justify-start gap-4 align-middle'>
             <HamburgerIcon  onClick={() => dispatch(sidebarToggle())} className='h-auto cursor-pointer'/>
             <Logo/>

@@ -6,9 +6,11 @@ import { addMessage } from '../features/livechat/livechat'
 import { generateRandomMessage, generateRandomName } from '../utils/helpers'
 import LiveComment from './LiveComment'
 
-const LiveChat = ({ videoHeight}: { videoHeight : string}) => {
+const LiveChat = () => {
     const messages = useSelector((state: RootState) => state.livechat.messages)
     const dispatch = useDispatch()
+    const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isSidebarOpen)
+
 
     useEffect(() => {
         const apipolling = setInterval(() => {
@@ -24,7 +26,7 @@ const LiveChat = ({ videoHeight}: { videoHeight : string}) => {
     }, [])
 
   return (
-    <div className={`flex flex-col border-[1.5px]  rounded-md w-full h-[${videoHeight}]`}>
+    <div className={`flex flex-col border-[1.5px]  rounded-md w-full ${isSidebarOpen ? 'h-[600px]' : 'h-[700px]'}`}>
       <div className={`flex p-3 flex-col-reverse gap-4 shadow-sm overflow-y-scroll h-full`}>
           {messages.map(({name,message}, index) => (
             <ChatMessage key={index} name={name} message={message}/>
