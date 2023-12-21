@@ -57,7 +57,6 @@ function Header() {
                 setShowsuggestions(false);
             }
         }
-
         document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
@@ -71,7 +70,8 @@ function Header() {
         try {
             const response = await fetch(`${YOUTUBE_SEARCH_VIDEO}q=${searchQuery}&key=AIzaSyChltceAnm4NiSLnObp1Fs5ZkyygGHVOGE`);
             const data = await response.json()
-            dispatch(getSearchedVideos(data?.items))
+            console.log('HEADER', data)
+            dispatch(getSearchedVideos({type : 'INITIAL_VIDEO_SEARCH', videos : data?.items, nextPageToken : data?.nextPageToken}))
             navigate('/results')  
         } catch (error) {
             console.log('SERACH VIDEO',error)
@@ -92,7 +92,7 @@ function Header() {
     }
   
   return (
-    <div className='flex justify-between fixed w-full bg-white align-middle py-6 px-4 z-50'>
+    <div className='flex justify-between fixed w-full align-middle py-6 px-4 z-[50] bg-slate-50'>
         <section className='flex justify-start gap-4 align-middle'>
             <HamburgerIcon  onClick={() => dispatch(sidebarToggle())} className='h-auto cursor-pointer'/>
             <Logo/>

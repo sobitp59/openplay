@@ -1,46 +1,86 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { Check } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { INFINITE_SCROLL_OFFSET, YOUTUBE_SEARCH_VIDEO_MORE } from '../constants';
+import { getSearchedVideos } from '../features/search/search';
 
 const Results = () => {
+  const pageToken = useSelector((store: RootState) => store.search.nextPageToken);
+  const pageTokens = useSelector((store: RootState) => store.search.visitedPages);
   const videos = useSelector((store: RootState) => store.search.videos);
-  console.log(videos)
+  const navigate = useNavigate()
+  const searchQuery = useSelector((store: RootState) => store.search.searchQuery) ;
+  const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   async function handleInfiniteSearh() {
-  //     console.log('HELLO')
-  //     console.log(document.documentElement.clientWidth);
-  //   }
+  // pageToken=CBkQAA&
 
-  //   window.addEventListener('scroll', handleInfiniteSearh);
-  // }, [])
+  useEffect(() => {
+
+    if(videos.length < 1){
+      navigate('/')
+    }
+  }, [videos])
+
+  useEffect(() => {
+    let timeoutId : number | undefined | ReturnType<typeof setTimeout>;
+
+    async function handleVideoSearch(){
+      try {
+          const response = await fetch(`${YOUTUBE_SEARCH_VIDEO_MORE}q=${searchQuery}&pageToken=${pageToken}&key=AIzaSyChltceAnm4NiSLnObp1Fs5ZkyygGHVOGE`);
+          const data = await response.json()
+          dispatch(getSearchedVideos({type : 'INFINITE_VIDEO_SEARCH', videos : data?.items, pageToken : data?.nextPageToken}))
+      } catch (error) {
+          console.log('SERACH VIDEO',error)
+      }
+    }
+
+
+    async function handleInfiniteSearh() {
+      if(window.innerHeight + document.documentElement.scrollTop + 1 > document.documentElement.scrollHeight){
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          handleVideoSearch()
+        }, INFINITE_SCROLL_OFFSET) 
+      }
+    }
+
+    window.addEventListener('scroll', handleInfiniteSearh);
+
+    return () => {
+      window.removeEventListener('scroll', handleInfiniteSearh);
+      clearTimeout(timeoutId);
+    }
+  }, [searchQuery, pageToken])
+
+  console.log('SEARCH VIDEOS', videos)
+  // console.log('SEARCH VIDEOS', videoInfo)
 
   return (
     <div className='p-6 w-full mt-[80px]'>
-      <ul>
-        {videos?.map(({snippet : {title, description, thumbnails,channelTitle},id }) => (
+      <ul className='w-full'>
+        {videos.length > 0 && videos?.map(({snippet,id }) => (
            <Link key={id['videoId']} to={`/watch?v=${id['videoId']}`}>
             <li className='flex border-[1.5px] cursor-pointer  mb-4 w-full p-2 gap-4 rounded-md shadow-sm'>
               <section>
                 <img 
-                  src={thumbnails['medium']['url']} 
+                  src={snippet?.thumbnails['medium']['url']} 
                   className='rounded-md w-[400px]' 
                   alt="youtube banner"
                 />
               </section>
 
               <section>
-                <h1 className='font-bold'>{title}</h1>
+                <h1 className='font-bold'>{snippet?.title}</h1>
                 <section className='h-7 mt-2 flex justify-start align-middle gap-2'>
                   <img 
                     className='h-7 w-7 rounded-full shadow-sm border-[1px] object-cover'
-                    src={thumbnails['default']['url']} alt="yuotube channel avatare" />
-                  <h2 className='text-sm leading-7 font-semibold'>{channelTitle}</h2>
+                    src={snippet?.thumbnails['default']['url']} alt="yuotube channel avatare" />
+                  <h2 className='text-sm leading-7 font-semibold'>{snippet?.channelTitle}</h2>
                     <Check className='w-6 h-6 bg-gray-300 p-1 rounded-full font-bold' /> 
                 </section>
-                <p className='line-clamp-1 text-sm mt-2'>{description}</p>
+                <p className='line-clamp-1 text-sm mt-2'>{snippet?.description}</p>
               </section>
             </li>
            </Link>

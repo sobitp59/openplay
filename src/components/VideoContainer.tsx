@@ -24,12 +24,16 @@ function VideoContainer() {
     }
   }
 
+  // grid-cols-[repeat(4,minmax(100px,500px))]
+
+  console.log('SEARCH', videos)
+  // grid place-items-center  gap-4 ${isSidebarOpen ? 'grid-cols-4' : 'grid-cols-5'} 
 
   return (
-    <div className="p-6 mt-[80px]">
-      <ul className={`grid ${isSidebarOpen ? 'grid-cols-4' : 'grid-cols-5'} gap-8`}>
-        {videos.map(({id, snippet, statistics}, index) => (
-          <li key={index}>
+    <div className="w-full mt-[100px] p-6">
+      <ul className={`w-full grid place-items-center  gap-4 ${isSidebarOpen ? 'grid-cols-4' : 'grid-cols-5'}`}>
+        {videos?.map(({id, snippet, statistics}, index) => (
+          <li key={index} className="w-full  border-[1.5px] rounded-md hover:shadow-xl">
             <Link to={`/watch?v=${id}`}>
               <VideoCard snippet={snippet} statistics={statistics}/>
             </Link>

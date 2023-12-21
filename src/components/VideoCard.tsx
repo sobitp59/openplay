@@ -21,12 +21,12 @@ function VideoCard({snippet, statistics} : { snippet: VideoType, statistics : Vi
     
  
     return (
-    <div className='w-[350px] h-[280px] border-[1.5px] rounded-md'>
+    <div>
         <img className='w-full rounded-t-md' src={video?.thumbnails?.medium?.url} alt="" />
         
-        <section className='p-2 flex flex-col justify-between'>
-            <h2 className='line-clamp-2 text-sm'>{video?.title}</h2>
-            <p className='text-xs font-bold mt-2 flex justify-between'>{video?.channelTitle} <span className='font-sm font-semibold'>{(Number(stats?.viewCount)/1000).toFixed(0)}K views</span></p>
+        <section className='w-full h-full p-2 flex flex-col justify-between items-start'>
+            <h2 className='font-manrope line-clamp-1 text-sm'>{video?.title}</h2>
+            <p className='font-manrope w-full text-xs line-clamp-1 font-bold mt-2 flex justify-between'>{video?.channelTitle} <span className='font-sm font-semibold'>{(Number(stats?.viewCount)/1000).toFixed(0)}K views</span></p>
         </section>
     </div>
   )

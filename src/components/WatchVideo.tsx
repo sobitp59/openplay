@@ -247,18 +247,18 @@ export const WatchVideo = () => {
       },
     ]
     
-    const videoWidth = !isSidebarOpen ? '1200px' : '1100px'
+    // const videoWidth = !isSidebarOpen ? '1200px' : '1100px'
     const videoHeight = !isSidebarOpen ? '700px' : '600px'
 
   return (
     <div className='p-6 w-full mt-[80px] '>
       
         {/* Video Frame */}
-        <div className='w-full  flex gap-2 relative'>
-          <section className='w-full'>
+        <div className='w-full  grid grid-cols-4 gap-2 relative'>
+          <section className='col-span-3'>
             <iframe 
                 className='rounded-lg'
-                width={videoWidth} 
+                width={'100%'} 
                 height={videoHeight} 
                 src={"https://www.youtube.com/embed/" + searchParams.get("v")} 
                 title="YouTube video player" 
@@ -271,7 +271,7 @@ export const WatchVideo = () => {
         </div>
 
         {/* Comments Section */}
-        <section className={`w-[${videoWidth}]`}>
+        <section>
           <ul>
             {comments.map(({id, name, text, replies}) => (
               <>

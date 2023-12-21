@@ -1,11 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+type VideoInfoType = {
+    searchQuery : string,
+    cachedSearch : {},
+    nextPageToken: string;
+    videos: any[];
+    visitedPages: string[];
+};
 
-const initialState = {
+const initialState: VideoInfoType = {
     searchQuery : "",
     cachedSearch : {},
+    nextPageToken : '',
     videos : [],
+    visitedPages : []
+
 }
 
 export const searchSlice = createSlice({
@@ -19,7 +29,11 @@ export const searchSlice = createSlice({
             return state = {...state, searchQuery : action.payload}
         },
         getSearchedVideos : (state, action) => {
-            return state = {...state, videos : action.payload}
+            if(action.payload.type === 'INITIAL_VIDEO_SEARCH'){
+                return {...state, videos : action.payload.videos, nextPageToken : action.payload.nextPageToken}
+            }else if(action.payload.type === 'INFINITE_VIDEO_SEARCH'){
+                return {...state, videos :  [...state.videos, ...action.payload.videos], nextPageToken : action.payload.nextPageToken}
+            }
         }
     }
 })
