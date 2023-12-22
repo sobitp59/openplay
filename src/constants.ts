@@ -4,7 +4,7 @@ export const YOUTUBE_SUGGESTION_API = 'http://suggestqueries.google.com/complete
 export const YOUTUBE_SEARCH_VIDEO = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&'
 export const YOUTUBE_SEARCH_VIDEO_MORE = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&'
 export const LIVE_CHAT_OFFSET = 200;
-export const INFINITE_SCROLL_OFFSET = 300;
+export const INFINITE_SCROLL_OFFSET = 700;
 
 /*
 curl \

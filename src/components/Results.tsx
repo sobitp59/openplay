@@ -2,13 +2,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { Check } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { INFINITE_SCROLL_OFFSET, YOUTUBE_SEARCH_VIDEO_MORE } from '../constants';
 import { getSearchedVideos } from '../features/search/search';
+import SearchVideoSkeleton from '../skeletons/SearchVideoSkeleton';
 
 const Results = () => {
+  const [nextPageLoading, setNextPageLoading] = useState(false);
   const pageToken = useSelector((store: RootState) => store.search.nextPageToken);
-  const pageTokens = useSelector((store: RootState) => store.search.visitedPages);
   const videos = useSelector((store: RootState) => store.search.videos);
   const navigate = useNavigate()
   const searchQuery = useSelector((store: RootState) => store.search.searchQuery) ;
@@ -27,10 +28,14 @@ const Results = () => {
     let timeoutId : number | undefined | ReturnType<typeof setTimeout>;
 
     async function handleVideoSearch(){
+      setNextPageLoading(true)
       try {
-          const response = await fetch(`${YOUTUBE_SEARCH_VIDEO_MORE}q=${searchQuery}&pageToken=${pageToken}&key=AIzaSyChltceAnm4NiSLnObp1Fs5ZkyygGHVOGE`);
-          const data = await response.json()
-          dispatch(getSearchedVideos({type : 'INFINITE_VIDEO_SEARCH', videos : data?.items, pageToken : data?.nextPageToken}))
+        console.log('NEXTPAGE', pageToken)
+        const response = await fetch(`${YOUTUBE_SEARCH_VIDEO_MORE}q=${searchQuery}&pageToken=${pageToken}&key=AIzaSyChltceAnm4NiSLnObp1Fs5ZkyygGHVOGE`);
+        const data = await response.json()
+        console.log('RES : ', data)
+        dispatch(getSearchedVideos({type : 'INFINITE_VIDEO_SEARCH', videos : data?.items, nextPageToken : data?.nextPageToken}))
+        setNextPageLoading(false)
       } catch (error) {
           console.log('SERACH VIDEO',error)
       }
@@ -38,6 +43,7 @@ const Results = () => {
 
 
     async function handleInfiniteSearh() {
+      
       if(window.innerHeight + document.documentElement.scrollTop + 1 > document.documentElement.scrollHeight){
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
@@ -54,8 +60,6 @@ const Results = () => {
     }
   }, [searchQuery, pageToken])
 
-  console.log('SEARCH VIDEOS', videos)
-  // console.log('SEARCH VIDEOS', videoInfo)
 
   return (
     <div className='p-6 w-full mt-[80px]'>
@@ -86,8 +90,11 @@ const Results = () => {
            </Link>
         ))}
       </ul>
+      {nextPageLoading ? <SearchVideoSkeleton/> : null}
     </div>
   )
 }
 
 export default Results
+
+

@@ -32,6 +32,7 @@ export const searchSlice = createSlice({
             if(action.payload.type === 'INITIAL_VIDEO_SEARCH'){
                 return {...state, videos : action.payload.videos, nextPageToken : action.payload.nextPageToken}
             }else if(action.payload.type === 'INFINITE_VIDEO_SEARCH'){
+                console.log(action.payload  )
                 return {...state, videos :  [...state.videos, ...action.payload.videos], nextPageToken : action.payload.nextPageToken}
             }
         }
