@@ -137,7 +137,7 @@ function Sidebar() {
   if(!isSidebarOpen) return null;
 
   return (
-    <div className='w-[15%] fixed mt-[5.5rem] h-[91vh]  p-6 overflow-y-scroll no-scrollbar bg-slate-50'>
+    <div className='w-[15%] hidden md:block fixed mt-[5.5rem] h-[91vh]  p-6 overflow-y-scroll no-scrollbar bg-slate-50'>
       {/* SIDEBAR TOP */}
       <ul className='flex flex-col gap-4'>
         {sidebarTop.map(({icon, title, path}, index) => (

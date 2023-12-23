@@ -247,7 +247,6 @@ export const WatchVideo = () => {
       },
     ]
     
-    // const videoWidth = !isSidebarOpen ? '1200px' : '1100px'
     const videoHeight = !isSidebarOpen ? '700px' : '600px'
 
   return (

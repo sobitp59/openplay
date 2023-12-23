@@ -92,7 +92,7 @@ function Header() {
     }
   
   return (
-    <div className='flex justify-between fixed w-full align-middle py-6 px-4 z-[50] bg-slate-50'>
+    <div className='flex flex-col gap-3 md:flex-row  justify-between fixed w-full align-middle py-6 px-4 z-[50] bg-slate-50'>
         <section className='flex justify-start gap-4 align-middle'>
             <HamburgerIcon  onClick={() => dispatch(sidebarToggle())} className='h-auto cursor-pointer'/>
             <Logo/>
@@ -121,7 +121,7 @@ function Header() {
                 ))}
             </ul>}
         </div>
-        <section className='flex justify-center align-middle'>
+        <section className='hidden md:block justify-center align-middle'>
             <AvatarIcon className='h-auto w-[30px] text-gray-600'/>
         </section>
     </div>

@@ -13,7 +13,6 @@ function VideoContainer() {
   const videos = useSelector((state: RootState) => state.homevideos.videos)
   const totalVideos = useSelector((state: RootState) => state.homevideos.totalVideos) 
   const nextPageToken = useSelector((state: RootState) => state.homevideos.nextPageToken)
-  // const [videos, setVideos] = useState([])
   const isSidebarOpen = useSelector((state : RootState) => state.sidebar.isSidebarOpen) 
   const dispatch = useDispatch()
 
@@ -40,9 +39,8 @@ function VideoContainer() {
       setNextPageLoading(true)
       try {
         console.log('NEXTPAGE', nextPageToken)
-        const response = await fetch(`${YOUTUBE_SEARCH_VIDEO_MORE}&pageToken=${nextPageToken}&key=AIzaSyChltceAnm4NiSLnObp1Fs5ZkyygGHVOGE`);
+        const response = await fetch(`${YOUTUBE_SEARCH_VIDEO_MORE}&pageToken=${nextPageToken}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`);
         const data = await response.json()
-        console.log('RES : ', data)
         dispatch(getVideos({type : 'INFINITE_HOME_VIDEOS', videos : data?.items, nextPageToken : data?.nextPageToken}))
         setNextPageLoading(false)
       } catch (error) {
@@ -69,16 +67,9 @@ function VideoContainer() {
     }
   }, [nextPageToken])
 
-  // grid-cols-[repeat(4,minmax(100px,500px))]
-
-  console.log('SEARCH', videos)
-  // grid place-items-center  gap-4 ${isSidebarOpen ? 'grid-cols-4' : 'grid-cols-5'} 
-
-
   return (
     <div className="w-full mt-[100px] p-6">
-      {/* <HomeVideosSkeleton/> */}
-      <ul className={`w-full grid place-items-center  gap-4 ${isSidebarOpen ? 'grid-cols-4' : 'grid-cols-5'}`}>
+      <ul className={`w-full grid place-items-center grid-cols-1 gap-4 ${isSidebarOpen ? 'md:grid-cols-4' : 'md:grid-cols-5'}`}>
 
         
         {videos.length > 0 && videos?.map((video) => (

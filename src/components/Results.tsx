@@ -15,7 +15,6 @@ const Results = () => {
   const searchQuery = useSelector((store: RootState) => store.search.searchQuery) ;
   const dispatch = useDispatch()
 
-  // pageToken=CBkQAA&
 
   useEffect(() => {
 
@@ -24,16 +23,16 @@ const Results = () => {
     }
   }, [videos])
 
+
+  // INFINITE SEARCH
   useEffect(() => {
     let timeoutId : number | undefined | ReturnType<typeof setTimeout>;
 
     async function handleVideoSearch(){
       setNextPageLoading(true)
       try {
-        console.log('NEXTPAGE', pageToken)
-        const response = await fetch(`${YOUTUBE_SEARCH_VIDEO_MORE}q=${searchQuery}&pageToken=${pageToken}&key=AIzaSyChltceAnm4NiSLnObp1Fs5ZkyygGHVOGE`);
+        const response = await fetch(`${YOUTUBE_SEARCH_VIDEO_MORE}q=${searchQuery}&pageToken=${pageToken}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`);
         const data = await response.json()
-        console.log('RES : ', data)
         dispatch(getSearchedVideos({type : 'INFINITE_VIDEO_SEARCH', videos : data?.items, nextPageToken : data?.nextPageToken}))
         setNextPageLoading(false)
       } catch (error) {
